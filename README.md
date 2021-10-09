@@ -1,4 +1,4 @@
-I created a telegram bot based on TelegramApiBot. This bot has a connection to the COVID-19 data API and this bot can display all information around the world or a specific country:
+I created a telegram bot based on TelegramApiBot. This bot is connected to the COVID-19 Data API, and this bot can display all information around the world or in a specific country. This bot can display information on confirmed, critical, dead and being treated:
 
 <details>
   <summary>
