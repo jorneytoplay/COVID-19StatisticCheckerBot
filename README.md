@@ -7,6 +7,13 @@ I created a telegram bot based on TelegramApiBot. This bot is connected to the C
 <img src="https://github.com/jorneytoplay/COVID-19StatisticCheckerBot/blob/master/pic/1.jpg" width="350" />
   </details>
   
+   <details>
+  <summary>
+    Country selection 
+  </summary>
+<https://github.com/jorneytoplay/COVID-19StatisticCheckerBot/blob/master/pic/photo_2021-10-10_01-02-17.jpg" width="350" />
+  </details> 
+  
   <details>
   <summary>
     Types of information
