@@ -11,7 +11,7 @@ I created a telegram bot based on TelegramApiBot. This bot is connected to the C
   <summary>
     Country selection 
   </summary>
-<https://github.com/jorneytoplay/COVID-19StatisticCheckerBot/blob/master/pic/photo_2021-10-10_01-02-17.jpg" width="350" />
+<img src="https://github.com/jorneytoplay/COVID-19StatisticCheckerBot/blob/master/pic/photo_2021-10-10_01-02-17.jpg" width="350" />
   </details> 
   
   <details>
