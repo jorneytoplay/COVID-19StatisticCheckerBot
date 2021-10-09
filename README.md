@@ -4,15 +4,15 @@ I created a telegram bot based on TelegramApiBot. This bot has a connection to t
   <summary>
     Select mode
   </summary>
-<img src="https://github.com/jorneytoplay/COVID-19StatisticCheckerBot/blob/master/pic/1.jpg" width="400" />
+<img src="https://github.com/jorneytoplay/COVID-19StatisticCheckerBot/blob/master/pic/1.jpg" width="350" />
   </details>
   
   <details>
   <summary>
     Types of information
   </summary>
-<img src="https://github.com/jorneytoplay/COVID-19StatisticCheckerBot/blob/master/pic/2.jpg" width="400" />
+<img src="https://github.com/jorneytoplay/COVID-19StatisticCheckerBot/blob/master/pic/2.jpg" width="350" />
   </details>
 
 Demonstration of work:
-<img src="https://github.com/jorneytoplay/COVID-19StatisticCheckerBot/blob/master/pic/IMG_2093.gif" alt="this slowpoke moves"  width="450" />
+<br><img src="https://github.com/jorneytoplay/COVID-19StatisticCheckerBot/blob/master/pic/IMG_2093.gif" alt="this slowpoke moves"  width="200" /></br>
