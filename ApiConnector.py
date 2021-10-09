@@ -11,11 +11,13 @@ def get_data(country, mode):
     if mode in 'total':
         url = "https://covid-19-data.p.rapidapi.com/country/code"
         querystring = {"code": country}
-    elif mode in 'daily':
-        url = "https://covid-19-data.p.rapidapi.com/report/country/code"
-        querystring = {"date": "2020-04-01", "code": country}
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        return response.json()
+    elif mode in 'world':
+        url = "https://covid-19-data.p.rapidapi.com/totals"
+        response = requests.request("GET", url, headers=headers)
+        return response.json()
     else:
         return 'message'
 
-    response = requests.request("GET", url, headers=headers, params=querystring)
-    return response.json()
+

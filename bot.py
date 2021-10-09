@@ -1,4 +1,3 @@
-
 import telebot
 import ApiConnector
 import Key
@@ -9,7 +8,6 @@ country_list = ('ru', 'ua', 'by')
 bot = telebot.TeleBot(Key.TOKEN)  # Send security token
 
 
-
 def print_keyboard(message, text, *buttons):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(*buttons)
@@ -18,14 +16,32 @@ def print_keyboard(message, text, *buttons):
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)  # Create buttonboard
-    markup.add(BList.ru, BList.uk, BList.by)
-    bot.send_message(message.chat.id, 'Hello, {0.first_name}! Choose a country:'.format(message.from_user),
-                     reply_markup=markup)
+    print_keyboard(message, 'Hello, {0.first_name}! Choose to find out information by country or worldwide:'.format(
+        message.from_user),
+                   BList.latest_info, BList.all_info)
+    bot.register_next_step_handler(message, chose_mode)
 
 
 @bot.message_handler(content_types=['text'])
-def chose_country(message):
+def chose_mode(message):
+    if 'World' in message.text:
+        print_keyboard(message, 'Select the information you would like to know:',
+                       BList.cnfrmd, BList.rcvrd, BList.crit, BList.dths, BList.bck)
+        mode = 'world'
+        bot.register_next_step_handler(message, chose_info, 'Aboba', mode)  # Because chose_info get country
+    elif 'Total' in message.text:
+        print_keyboard(message, 'Choose a country:',
+                       BList.ru, BList.uk, BList.by)
+        mode = 'total'
+        bot.register_next_step_handler(message, chose_country, mode)
+
+    else:
+        print_keyboard(message, 'Choose to find out information by country or worldwide:',
+                       BList.latest_info, BList.all_info)
+        bot.register_next_step_handler(message, chose_mode)
+
+
+def chose_country(message, mode):
     country = None
     if 'Russia' in message.text:
         country = 'ru'
@@ -37,40 +53,17 @@ def chose_country(message):
         country = 'by'
 
     if country not in country_list:
-        print_keyboard(message,'Choose a country:',
-                       BList.ru, BList.uk, BList.by)
-    else:
-        print_keyboard(message,'Choose to receive recent or general country information:',
-                       BList.latest_info,BList.all_info)
-        bot.register_next_step_handler(message, chose_mode, country)
-
-
-
-def chose_mode(message, country):
-
-    print(message.text)  # ПОЧЕМУ ОН ВЫВОДИТ Russia 🇷🇺 а не Daily    #3
-    if 'Daily' in message.text:
-        print_keyboard(message,'Select the information you would like to know:',
-                       BList.cnfrmd, BList.rcvrd, BList.crit, BList.dths, BList.bck)
-        mode = 'daily'
-        bot.register_next_step_handler(message, chose_info, country, mode)
-    elif 'Total' in message.text:
-        print_keyboard(message, 'Select the information you would like to know:',
-                       BList.cnfrmd, BList.rcvrd, BList.crit, BList.dths, BList.bck)
-        mode = 'total'
-        bot.register_next_step_handler(message, chose_info, country, mode)
-
-    else:
-        bot.send_message(message.chat.id,
-                         'Please try again:'.format(message.from_user))
         print_keyboard(message, 'Choose a country:',
                        BList.ru, BList.uk, BList.by)
-        bot.register_next_step_handler(message, chose_country)
+    else:
+        print_keyboard(message, 'Select the information you would like to know:',
+                       BList.cnfrmd, BList.rcvrd, BList.crit, BList.dths, BList.bck)
+        bot.register_next_step_handler(message, chose_info, country, mode)
 
 
 def chose_info(message, country, mode):
     try:
-        text = ApiConnector.get_data(country,mode)  # get json info about country
+        text = ApiConnector.get_data(country, mode)  # get json info about country
     except:
         bot.send_message(message.chat.id,
                          'An error occurred while getting data, please try again later... 😞'.format(message.from_user))
@@ -78,41 +71,41 @@ def chose_info(message, country, mode):
 
     if 'message' not in text:
         if 'Back' in message.text:
-            print_keyboard(message, 'Choose a country:',
-                           BList.ru, BList.uk, BList.by)
-            bot.register_next_step_handler(message, chose_country)  # 4
+            print_keyboard(message, 'Choose to find out information by country or worldwide:',
+                           BList.latest_info, BList.all_info)
+            bot.register_next_step_handler(message, chose_mode)
 
         if 'Confirmed' in message.text:
             bot.send_message(message.chat.id, text[0]['confirmed'])
             print_keyboard(message, 'Select the information you would like to know:',
                            BList.cnfrmd, BList.rcvrd, BList.crit, BList.dths, BList.bck)
-            bot.register_next_step_handler(message, chose_info, country,mode)
+            bot.register_next_step_handler(message, chose_info, country, mode)
 
 
         elif "Recovered" in message.text:
             bot.send_message(message.chat.id, text[0]['recovered'])
             print_keyboard(message, 'Select the information you would like to know:',
                            BList.cnfrmd, BList.rcvrd, BList.crit, BList.dths, BList.bck)
-            bot.register_next_step_handler(message, chose_info, country,mode)
+            bot.register_next_step_handler(message, chose_info, country, mode)
 
         elif 'Deaths' in message.text:
             bot.send_message(message.chat.id, text[0]['deaths'])
             print_keyboard(message, 'Select the information you would like to know:',
                            BList.cnfrmd, BList.rcvrd, BList.crit, BList.dths, BList.bck)
-            bot.register_next_step_handler(message, chose_info, country,mode)
+            bot.register_next_step_handler(message, chose_info, country, mode)
 
         elif 'Critical' in message.text:
             bot.send_message(message.chat.id, text[0]['critical'])
             print_keyboard(message, 'Select the information you would like to know:',
                            BList.cnfrmd, BList.rcvrd, BList.crit, BList.dths, BList.bck)
-            bot.register_next_step_handler(message, chose_info, country,mode)
+            bot.register_next_step_handler(message, chose_info, country, mode)
 
     else:
         bot.send_message(message.chat.id,
                          "Sorry, the bot is overloaded with requests, please try again in a few seconds... 😞")
         print_keyboard(message, 'Select the information you would like to know:',
                        BList.cnfrmd, BList.rcvrd, BList.crit, BList.dths, BList.bck)
-        bot.register_next_step_handler(message, chose_info, country,mode)
+        bot.register_next_step_handler(message, chose_info, country, mode)
         print("More requests")
 
 
